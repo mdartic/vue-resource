@@ -1,5 +1,5 @@
 /**
- * vue-resource v0.7.1
+ * vue-resource v0.7.2
  * https://github.com/vuejs/vue-resource
  * Released under the MIT License.
  */
@@ -687,6 +687,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Http.interceptors.forEach(function (handler) {
 	        client = interceptor(handler, this.$vm)(client);
 	    }, this);
+
+	    if (_.isObject(url) && _.isObject(url.interceptors)) {
+	        Object.keys(url.interceptors).forEach(function (key) {
+	            client = interceptor(url.interceptors[key], this.$vm)(client);
+	        }, this);
+	    }
 
 	    options = _.isObject(url) ? url : _.extend({url: url}, options);
 	    request = _.merge({}, Http.options, this.$options, options);
